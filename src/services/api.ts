@@ -22,10 +22,6 @@ apiClient.interceptors.request.use(config => {
 });
 
 export const searchArticles = async (query: string): Promise<Article[]> => {
-  if (!query) {
-    return [];
-  }
-
   try {
     const response = await apiClient.get<ArticleSearchResponse>("/articlesearch.json", {
       params: {

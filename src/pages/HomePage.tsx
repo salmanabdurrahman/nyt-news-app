@@ -1,44 +1,12 @@
-import { useState } from "react";
-import { searchArticles } from "@/services/api";
-import type { Article } from "@/types";
+import useArticleSearch from "@/hooks/useArticleSearch";
 import SearchForm from "@/components/features/SearchForm";
 import SearchResults from "@/components/features/SearchResults";
 
 const HomePage = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [hasSearched, setHasSearched] = useState(false);
-
-  const handleSearch = async (query: string) => {
-    if (!query.trim()) {
-      setArticles([]);
-      setHasSearched(false);
-      setError(null);
-      return;
-    }
-
-    setIsLoading(true);
-    setError(null);
-    setHasSearched(true);
-
-    try {
-      const result = await searchArticles(query);
-      setArticles(result);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("An unexpected error occurred.");
-      }
-      setArticles([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { articles, isLoading, error, hasSearched, executeSearch } = useArticleSearch();
 
   return (
-    <main className="container mx-auto min-h-screen p-4 md:p-8">
+    <main className="container mx-auto min-h-screen p-4 md:p-10">
       <header className="mb-8 flex flex-col items-center text-center">
         <h1 className="text-4xl font-bold tracking-tight text-slate-900 md:text-5xl dark:text-slate-50">
           Pencarian Artikel
@@ -49,7 +17,7 @@ const HomePage = () => {
         </p>
       </header>
       <section className="mb-12 flex justify-center">
-        <SearchForm onSubmit={handleSearch} isLoading={isLoading} />
+        <SearchForm onSubmit={executeSearch} isLoading={isLoading} />
       </section>
       <section>
         <SearchResults
