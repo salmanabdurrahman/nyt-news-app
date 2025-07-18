@@ -9,7 +9,7 @@ interface SearchFormProps {
 }
 
 const SearchForm = ({ onSubmit, isLoading }: SearchFormProps) => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,11 +20,14 @@ const SearchForm = ({ onSubmit, isLoading }: SearchFormProps) => {
     <form onSubmit={handleSubmit} className="flex w-full max-w-2xl items-center space-x-2">
       <Input
         type="text"
-        placeholder="Cari artikel tentang 'pemilu', 'teknologi', 'olahraga'..."
+        name="search"
+        placeholder="Cari artikel tentang 'indonesia', 'teknologi', 'politik'..."
         value={query}
         onChange={e => setQuery(e.target.value)}
         disabled={isLoading}
         className="flex-1"
+        autoComplete="search"
+        autoFocus
       />
       <Button type="submit" disabled={isLoading} aria-label="Cari">
         {isLoading ? (

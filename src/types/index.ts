@@ -38,7 +38,7 @@ export interface Article {
   word_count: number;
 }
 
-export interface Meta {
+export interface MetaData {
   hits: number;
   offset: number;
   time: number;
@@ -49,6 +49,6 @@ export interface ArticleSearchResponse {
   copyright: string;
   response: {
     docs: Article[];
-    meta: Meta;
+    metadata: MetaData;
   };
 }

@@ -1,9 +1,19 @@
 import useArticleSearch from "@/hooks/useArticleSearch";
 import SearchForm from "@/components/features/SearchForm";
 import SearchResults from "@/components/features/SearchResults";
+import PaginationControls from "@/components/features/PaginationControls";
 
 const HomePage = () => {
-  const { articles, isLoading, error, hasSearched, executeSearch } = useArticleSearch();
+  const {
+    articles,
+    isLoading,
+    error,
+    hasSearched,
+    currentPage,
+    totalPages,
+    executeSearch,
+    changePage,
+  } = useArticleSearch();
 
   return (
     <main className="container mx-auto min-h-screen p-4 md:p-10">
@@ -12,8 +22,7 @@ const HomePage = () => {
           Pencarian Artikel
         </h1>
         <p className="mt-3 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
-          Gunakan mesin pencari di bawah ini untuk menjelajahi jutaan artikel dari The New York
-          Times.
+          Gunakan mesin pencari di bawah ini untuk menjelajahi artikel dari The New York Times.
         </p>
       </header>
       <section className="mb-12 flex justify-center">
@@ -26,6 +35,13 @@ const HomePage = () => {
           error={error}
           hasSearched={hasSearched}
         />
+        {!isLoading && articles.length > 0 && (
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={changePage}
+          />
+        )}
       </section>
     </main>
   );

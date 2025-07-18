@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Article, ArticleSearchResponse } from "@/types";
+import type { Article, ArticleSearchResponse, MetaData } from "@/types";
 
 const API_KEY = import.meta.env.VITE_NYT_API_KEY;
 
@@ -21,16 +21,29 @@ apiClient.interceptors.request.use(config => {
   return config;
 });
 
-export const searchArticles = async (query: string): Promise<Article[]> => {
+export interface ArticleSearchResult {
+  articles: Article[];
+  metadata: MetaData;
+}
+
+export const searchArticles = async (
+  query: string,
+  page: number = 0
+): Promise<ArticleSearchResult> => {
   try {
     const response = await apiClient.get<ArticleSearchResponse>("/articlesearch.json", {
       params: {
         fq: query,
+        page: page,
       },
     });
-    return response.data.response?.docs || [];
+
+    return {
+      articles: response.data.response?.docs || [],
+      metadata: response.data.response?.metadata || { hits: 0, offset: 0, time: 0 },
+    };
   } catch (error) {
     console.error("Error fetching articles:", error);
-    throw new Error("Failed to fetch articles from NYT API");
+    throw new Error("Failed to fetch articles from The New York Times API.");
   }
 };
