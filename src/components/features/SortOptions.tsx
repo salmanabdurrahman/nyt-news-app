@@ -17,7 +17,7 @@ interface SortOptionsProps {
 const SortOptions = ({ value, onChange, disabled }: SortOptionsProps) => {
   return (
     <Select value={value} onValueChange={onChange} disabled={disabled}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-full md:w-[180px]">
         <SelectValue placeholder="Urutkan berdasarkan" />
       </SelectTrigger>
       <SelectContent>

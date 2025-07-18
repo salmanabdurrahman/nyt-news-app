@@ -29,7 +29,7 @@ const PaginationControls = ({ currentPage, totalPages, onPageChange }: Paginatio
         aria-label="Halaman Sebelumnya"
       >
         <ChevronLeft className="h-4 w-4" />
-        <span className="ml-2">Sebelumnya</span>
+        <span className="ml-2 hidden md:inline">Sebelumnya</span>
       </Button>
       <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
         Halaman {currentPage + 1} dari {totalPages}
@@ -40,7 +40,7 @@ const PaginationControls = ({ currentPage, totalPages, onPageChange }: Paginatio
         disabled={currentPage >= totalPages - 1}
         aria-label="Halaman Berikutnya"
       >
-        <span className="mr-2">Berikutnya</span>
+        <span className="mr-2 hidden md:inline">Berikutnya</span>
         <ChevronRight className="h-4 w-4" />
       </Button>
     </div>
