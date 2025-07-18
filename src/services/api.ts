@@ -29,10 +29,10 @@ export const searchArticles = async (query: string): Promise<Article[]> => {
   try {
     const response = await apiClient.get<ArticleSearchResponse>("/articlesearch.json", {
       params: {
-        q: query,
+        fq: query,
       },
     });
-    return response.data.response.docs;
+    return response.data.response?.docs || [];
   } catch (error) {
     console.error("Error fetching articles:", error);
     throw new Error("Failed to fetch articles from NYT API");
