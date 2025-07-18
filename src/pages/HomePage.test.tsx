@@ -10,7 +10,14 @@ vi.mock("@/services/api");
 
 describe("HomePage Component", () => {
   beforeEach(() => {
-    vi.spyOn(apiService, "searchArticles").mockResolvedValue(MOCK_ARTICLES);
+    vi.spyOn(apiService, "searchArticles").mockResolvedValue({
+      articles: MOCK_ARTICLES,
+      metadata: {
+        hits: MOCK_ARTICLES.length,
+        offset: 0,
+        time: 15,
+      },
+    });
   });
 
   afterEach(() => {
