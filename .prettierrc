@@ -1,0 +1,19 @@
+{
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "printWidth": 100,
+  "requirePragma": false,
+  "useTabs": false,
+  "singleQuote": false,
+  "semi": true,
+  "arrowParens": "avoid",
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "[javascriptreact]": {
+    "singleQuote": false,
+    "singleAttributePerLine": true
+  },
+  "[html]": {
+    "singleQuote": false,
+    "singleAttributePerLine": false
+  }
+}
