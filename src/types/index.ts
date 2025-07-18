@@ -13,15 +13,17 @@ export interface Byline {
   }[];
 }
 
-export interface Multimedia {
-  rank: number;
-  subtype: string;
-  caption: string | null;
-  credit: string | null;
-  type: string;
+export interface MultimediaImage {
   url: string;
   height: number;
   width: number;
+}
+
+export interface Multimedia {
+  caption: string | null;
+  credit: string | null;
+  default: MultimediaImage;
+  thumbnail: MultimediaImage;
 }
 
 export interface Article {
@@ -31,8 +33,8 @@ export interface Article {
   headline: Headline;
   byline: Byline;
   pub_date: string;
-  source: string;
-  multimedia: Multimedia[];
+  source: string | null;
+  multimedia: Multimedia;
   word_count: number;
 }
 
