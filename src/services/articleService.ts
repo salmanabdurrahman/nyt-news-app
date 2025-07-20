@@ -15,7 +15,7 @@ export const searchArticles = async (
   try {
     const response = await apiClient.get<ArticleSearchResponse>("/articlesearch.json", {
       params: {
-        fq: query,
+        q: query,
         page,
         sort,
       },
