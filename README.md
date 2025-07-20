@@ -12,7 +12,7 @@ Aplikasi web modern untuk mencari dan menjelajahi artikel dari The New York Time
 - **Dark/Light Mode:** Ganti tema aplikasi dengan pilihan yang tersimpan.
 - **Desain Responsif:** Tampilan optimal di semua perangkat.
 
-## stack Teknologi
+## 🛠️ Tech Stack
 
 - **Framework:** React, Vite
 - **Bahasa:** TypeScript
