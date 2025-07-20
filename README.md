@@ -1,69 +1,73 @@
-# React + TypeScript + Vite
+# Aplikasi Pencarian Artikel The New York Times
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplikasi web modern untuk mencari dan menjelajahi artikel dari The New York Times API, dibangun dengan React & TypeScript.
 
-Currently, two official plugins are available:
+**[🚀 Lihat Demo Langsung](https://nyt-news-app-mu.vercel.app)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Fitur
 
-## Expanding the ESLint configuration
+- **Pencarian Artikel:** Cari artikel berdasarkan kata kunci.
+- **Opsi Pengurutan:** Urutkan hasil berdasarkan relevansi, terbaru, atau terlama.
+- **Infinite Scroll:** Muat artikel baru secara otomatis saat scroll.
+- **Dark/Light Mode:** Ganti tema aplikasi dengan pilihan yang tersimpan.
+- **Desain Responsif:** Tampilan optimal di semua perangkat.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## stack Teknologi
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Framework:** React, Vite
+- **Bahasa:** TypeScript
+- **Styling:** Tailwind CSS, shadcn/ui
+- **Data Fetching:** Axios
+- **Testing:** Vitest, React Testing Library
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## 🛠️ Instalasi & Menjalankan
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1.  **Clone repository ini:**
+
+    ```bash
+    git clone https://github.com/salmanabdurrahman/nyt-news-app.git
+    cd nyt-news-app
+    ```
+
+2.  **Setup Environment Variables:**
+    - Salin `.env.example` menjadi `.env`.
+      ```bash
+      cp .env.example .env
+      ```
+    - Buka `.env` dan isi variabelnya:
+      - `VITE_NYT_API_KEY`: Kunci API rahasia dari [NYT Developer Portal](https://developer.nytimes.com/).
+      - `VITE_NYT_API_BASE_URL`: Alamat dasar API, contoh: `https://api.nytimes.com/svc/search/v2`.
+
+3.  **Install dependensi:**
+
+    ```bash
+    npm install
+    ```
+
+4.  **Jalankan server development:**
+
+    ```bash
+    npm run dev
+    ```
+
+    Aplikasi akan berjalan di `http://localhost:5173`.
+
+## 🧪 Testing
+
+Untuk menjalankan pengujian, gunakan perintah berikut:
+
+```bash
+npm run test
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Pengujian akan dijalankan menggunakan Vitest dan React Testing Library.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 📦 Build untuk Production
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Untuk membangun aplikasi untuk produksi, gunakan perintah berikut:
+
+```bash
+npm run build
 ```
+
+Hasil build akan disimpan di direktori `dist`.
