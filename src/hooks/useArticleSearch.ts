@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { searchArticles } from "@/services/api";
+import { searchArticles } from "@/services/articleService";
 import type { Article } from "@/types";
 import type { SortOption } from "@/components/features/SortOptions";
 

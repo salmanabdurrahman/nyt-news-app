@@ -20,7 +20,7 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
 
   return (
     <a href={article.web_url} target="_blank" rel="noopener noreferrer" className="block h-full">
-      <Card className="group flex h-full flex-col overflow-hidden transition-all hover:shadow-xl dark:hover:border-slate-600 dark:hover:bg-slate-800/50">
+      <Card className="group flex h-full flex-col overflow-hidden pt-0 transition-all hover:shadow-xl dark:hover:border-slate-600 dark:hover:bg-slate-800/50">
         <div className="relative aspect-video w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
           <img
             src={imageUrl}
@@ -32,7 +32,9 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
         </div>
         <div className="flex flex-grow flex-col p-4">
           <CardHeader className="p-0">
-            <CardTitle className="text-lg leading-tight">{article.headline.main}</CardTitle>
+            <CardTitle className="text-lg leading-tight hover:text-slate-600">
+              {article.headline.main}
+            </CardTitle>
             <CardDescription className="pt-2">
               {author} &middot; {formatDate(article.pub_date)}
             </CardDescription>

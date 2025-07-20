@@ -3,14 +3,14 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import HomePage from "./HomePage";
-import * as apiService from "@/services/api";
+import * as articleService from "@/services/articleService";
 import { MOCK_ARTICLES } from "@/constants/dummyData";
 
-vi.mock("@/services/api");
+vi.mock("@/services/articleService");
 
 describe("HomePage Component", () => {
   beforeEach(() => {
-    vi.spyOn(apiService, "searchArticles").mockResolvedValue({
+    vi.spyOn(articleService, "searchArticles").mockResolvedValue({
       articles: MOCK_ARTICLES,
       metadata: {
         hits: MOCK_ARTICLES.length,
@@ -61,7 +61,7 @@ describe("HomePage Component", () => {
 
   // Test case for empty search input
   it("displays an error message if the API call fails", async () => {
-    vi.spyOn(apiService, "searchArticles").mockRejectedValue(new Error("API Gagal"));
+    vi.spyOn(articleService, "searchArticles").mockRejectedValue(new Error("API Gagal"));
 
     const user = userEvent.setup();
     render(<HomePage />);

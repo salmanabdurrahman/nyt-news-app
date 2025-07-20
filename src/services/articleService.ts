@@ -1,25 +1,6 @@
-import axios from "axios";
+import { apiClient } from "@/lib/axios";
 import type { Article, ArticleSearchResponse, MetaData } from "@/types";
-import { API_BASE_URL, API_KEY } from "@/constants/appConfig";
 import type { SortOption } from "@/components/features/SortOptions";
-
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-});
-
-apiClient.interceptors.request.use(config => {
-  if (!API_KEY) {
-    throw new Error(
-      "NYT API key is not defined. Please set VITE_NYT_API_KEY in your environment variables."
-    );
-  }
-
-  config.params = {
-    ...config.params,
-    "api-key": API_KEY,
-  };
-  return config;
-});
 
 export interface ArticleSearchResult {
   articles: Article[];
