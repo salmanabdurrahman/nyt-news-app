@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-import HomePage from "./HomePage";
+import HomePage from "@/pages/HomePage";
 import * as articleService from "@/services/articleService";
 import { MOCK_ARTICLES } from "@/constants/dummyData";
 
