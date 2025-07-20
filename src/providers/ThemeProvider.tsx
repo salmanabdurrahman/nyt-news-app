@@ -9,7 +9,7 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-  theme: "system",
+  theme: "light",
   setTheme: () => {},
 };
 
@@ -23,7 +23,7 @@ interface ThemeProviderProps {
 
 export const ThemeProvider = ({
   children,
-  defaultTheme = "system",
+  defaultTheme = "light",
   storageKey = "vite-ui-theme",
 }: ThemeProviderProps) => {
   const [theme, setTheme] = useLocalStorage(storageKey, defaultTheme);

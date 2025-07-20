@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { searchArticles } from "@/services/articleService";
 import type { Article } from "@/types";
 import type { SortOption } from "@/components/features/SortOptions";
@@ -8,75 +8,86 @@ const useArticleSearch = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(0);
-  const [totalPages, setTotalPages] = useState<number>(0);
   const [currentQuery, setCurrentQuery] = useState<string>("");
   const [sortOption, setSortOption] = useState<SortOption>("relevance");
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState<boolean>(false);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+  const throttleLock = useRef<boolean>(false);
 
-  const performSearch = useCallback(async (query: string, page: number, sort: SortOption) => {
-    setIsLoading(true);
-    setError(null);
-    window.scrollTo(0, 0);
+  const performSearch = useCallback(
+    async (query: string, page: number, sort: SortOption, isNewSearch: boolean) => {
+      isNewSearch ? setIsLoading(true) : setIsFetchingNextPage(true);
+      setError(null);
 
-    try {
-      const result = await searchArticles(query, page, sort);
-      setArticles(result.articles);
-      if (page === 0) {
-        setTotalPages(Math.ceil(result.metadata.hits / 10));
+      try {
+        const result = await searchArticles(query, page, sort);
+        setArticles(prev => (isNewSearch ? result.articles : [...prev, ...result.articles]));
+
+        const totalFetched = (page + 1) * 10;
+        setHasNextPage(totalFetched < result.metadata.hits);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An unexpected error occurred.");
+        if (isNewSearch) {
+          setArticles([]);
+        }
+      } finally {
+        isNewSearch ? setIsLoading(false) : setIsFetchingNextPage(false);
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("An unexpected error occurred.");
-      }
-      setArticles([]);
-      setTotalPages(0);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    },
+    []
+  );
 
   const executeSearch = useCallback(
-    async (query: string) => {
-      if (!query.trim()) {
+    (query: string) => {
+      const trimmedQuery = query.trim();
+      if (!trimmedQuery) {
         setArticles([]);
         setHasSearched(false);
         setError(null);
-        setCurrentPage(0);
-        setTotalPages(0);
-        setCurrentQuery("");
         return;
       }
 
       setHasSearched(true);
-      setCurrentQuery(query);
+      setCurrentQuery(trimmedQuery);
       setCurrentPage(0);
-      performSearch(query, 0, sortOption);
+      setArticles([]);
+      performSearch(trimmedQuery, 0, sortOption, true);
     },
     [sortOption, performSearch]
   );
 
-  const changePage = useCallback(
-    async (newPage: number) => {
-      if (!currentQuery.trim() || newPage < 0 || newPage >= totalPages) {
-        return;
-      }
+  const fetchNextPage = useCallback(() => {
+    if (isLoading || isFetchingNextPage || !hasNextPage || throttleLock.current) return;
 
-      setCurrentPage(newPage);
-      performSearch(currentQuery, newPage, sortOption);
-    },
-    [currentQuery, totalPages, sortOption, performSearch]
-  );
+    throttleLock.current = true;
+
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    performSearch(currentQuery, nextPage, sortOption, false);
+
+    setTimeout(() => {
+      throttleLock.current = false;
+    }, 1700);
+  }, [
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    currentPage,
+    currentQuery,
+    sortOption,
+    performSearch,
+  ]);
 
   const handleSortChange = useCallback(
     (newSortOption: SortOption) => {
       setSortOption(newSortOption);
 
-      if (hasSearched && currentQuery) {
-        setCurrentPage(0);
-        performSearch(currentQuery, 0, newSortOption);
-      }
+      if (!hasSearched || !currentQuery) return;
+
+      setCurrentPage(0);
+      setArticles([]);
+      performSearch(currentQuery, 0, newSortOption, true);
     },
     [hasSearched, currentQuery, performSearch]
   );
@@ -84,14 +95,14 @@ const useArticleSearch = () => {
   return {
     articles,
     isLoading,
+    isFetchingNextPage,
     error,
     hasSearched,
-    currentPage,
-    totalPages,
+    hasNextPage,
     sortOption,
     executeSearch,
-    changePage,
     handleSortChange,
+    fetchNextPage,
   };
 };
 

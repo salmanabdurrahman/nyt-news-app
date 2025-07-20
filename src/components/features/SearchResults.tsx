@@ -24,7 +24,7 @@ const SearchResults = ({ isLoading, error, hasSearched, articles }: SearchResult
     );
   }
 
-  if (error) {
+  if (error && articles.length === 0) {
     return (
       <div
         className={`${containerClasses} rounded-lg border border-red-200 bg-red-50/50 dark:border-red-900/50 dark:bg-red-950/20`}
@@ -56,7 +56,16 @@ const SearchResults = ({ isLoading, error, hasSearched, articles }: SearchResult
   }
 
   if (hasSearched && articles.length > 0) {
-    return <ArticleList articles={articles} />;
+    return (
+      <>
+        <ArticleList articles={articles} />
+        {error && (
+          <div className="mt-4 text-center text-sm text-red-600 dark:text-red-400">
+            Gagal memuat lebih banyak artikel: {error}
+          </div>
+        )}
+      </>
+    );
   }
 
   return (

@@ -10,7 +10,7 @@ apiClient.interceptors.request.use(
     if (!API_KEY) {
       return Promise.reject(
         new Error(
-          "NYT API key is not defined. Please set VITE_NYT_API_KEY in your environment variables."
+          "New York Times API key is not defined. Please set VITE_NYT_API_KEY in your environment variables."
         )
       );
     }

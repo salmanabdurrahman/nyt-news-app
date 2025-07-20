@@ -1,28 +1,41 @@
+import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
 import useArticleSearch from "@/hooks/useArticleSearch";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import SearchForm from "@/components/features/SearchForm";
 import SearchResults from "@/components/features/SearchResults";
-import PaginationControls from "@/components/features/PaginationControls";
 import SortOptions from "./SortOptions";
 
 const ArticleSearchContainer = () => {
   const {
     articles,
     isLoading,
+    isFetchingNextPage,
     error,
     hasSearched,
-    currentPage,
-    totalPages,
+    hasNextPage,
     sortOption,
     executeSearch,
-    changePage,
     handleSortChange,
+    fetchNextPage,
   } = useArticleSearch();
+  const { ref, isIntersecting } = useIntersectionObserver({ rootMargin: "100px" });
+
+  useEffect(() => {
+    if (hasSearched && isIntersecting && hasNextPage && !isLoading && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasSearched, isIntersecting, hasNextPage, isLoading, isFetchingNextPage, fetchNextPage]);
 
   return (
     <>
       <section className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
         <SearchForm onSubmit={executeSearch} isLoading={isLoading} />
-        <SortOptions value={sortOption} onChange={handleSortChange} disabled={isLoading} />
+        <SortOptions
+          value={sortOption}
+          onChange={handleSortChange}
+          disabled={isLoading || isFetchingNextPage}
+        />
       </section>
       <section>
         <SearchResults
@@ -31,13 +44,12 @@ const ArticleSearchContainer = () => {
           error={error}
           hasSearched={hasSearched}
         />
-        {!isLoading && articles.length > 0 && (
-          <PaginationControls
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={changePage}
-          />
-        )}
+        <div ref={ref} className="mt-8 flex justify-center py-6">
+          {isFetchingNextPage && <Loader2 className="h-8 w-8 animate-spin text-slate-500" />}
+          {!hasNextPage && hasSearched && articles.length > 0 && (
+            <p className="text-slate-500">Anda telah mencapai akhir hasil pencarian.</p>
+          )}
+        </div>
       </section>
     </>
   );
